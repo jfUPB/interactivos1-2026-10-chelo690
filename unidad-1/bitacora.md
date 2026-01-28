@@ -2,31 +2,31 @@
 
 ## Bitácora de proceso de aprendizaje
 
-#Actividad 1: 
+### Actividad 1: 
 - Los sistemas fisicos interactivos se basan principalmente en la interaccion fisico-digital de un usuario utilizando diferentes tipos de sistemas que realizan diversas actividades, a esos sistemas se les denominan sistemas fisicos interactivos.
 
 - Se podrian utilizar dentro del ambito profesional como una forma mas inmersiva de experimentar el mundo digital, y a su vez una util herramienta visual y sensorial para trabajos y proyectos.
 
-#Actividad 2:
+### Actividad 2:
 - Dentro de lo que comprendi el Diseño/Arte generativo es una forma de dar diversos puntos de vusta e infirmacion al usuario acerca de productos y marcas utilizando varias herramientas digitales.
 
 - Podria utilizarse dentro del perfil profesional como una forma de diseño de marca, paginas web, animaciones y demas para dar una experiencia diferente y original al usuario.
 
-#Actividad 3:
+### Actividad 3:
 
 -Al sacudir el microbitrt el circulo se muestra verde con una C en el centro
 -AL presionar send love aparece una carita feliz en el microbit
 
-#Actividad 4:
+### Actividad 4:
 
 - 
 
 
 ## Bitácora de aplicación 
 
-#Actividad 5:
+### Actividad 5:
 
-###Python editor: from microbit import *
+#### Python editor: from microbit import *
 
 uart.init(baudrate=115200)
 display.show(Image.BUTTERFLY)
@@ -39,7 +39,7 @@ while True:
         uart.write('B')
         sleep(500)
         
-###P5.js: 
+#### P5.js: 
 let port;
 let connectBtn;
 
@@ -104,5 +104,6 @@ function sendBtnClick() {
 }
 
 ## Bitácora de reflexión
+
 
 
