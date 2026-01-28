@@ -26,7 +26,7 @@
 
 #Actividad 5:
 
-###_Python editor: from microbit import *
+###Python editor: from microbit import *
 
 uart.init(baudrate=115200)
 display.show(Image.BUTTERFLY)
@@ -39,7 +39,7 @@ while True:
         uart.write('B')
         sleep(500)
         
-###_P5.js: 
+###P5.js: 
 let port;
 let connectBtn;
 
@@ -104,4 +104,5 @@ function sendBtnClick() {
 }
 
 ## Bitácora de reflexión
+
 
