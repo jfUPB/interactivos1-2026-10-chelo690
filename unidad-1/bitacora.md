@@ -21,6 +21,9 @@
 
 - 
 
+
+## Bitácora de aplicación 
+
 #Actividad 5:
 
 ###_Python editor: from microbit import *
@@ -100,8 +103,5 @@ function sendBtnClick() {
     port.write('h');
 }
 
-## Bitácora de aplicación 
-
-
-
 ## Bitácora de reflexión
+
