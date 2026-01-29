@@ -19,7 +19,7 @@
 
 ### Actividad 4:
 
-- 
+- Al utilizar was_Pressed() detecta la pulsacion y devuelve en true solo por un corto instante que no refleja la accion en pantalla mientras que con el metodo Is_Pressed() devuelve true todo el tiempo y es una respuesta fluida y constante al microbit que no deja de funcionar solo con una pulsacion sino que sigue enviando informacion mientras se mantenga el boton presionado.
 
 
 ## Bitácora de aplicación 
@@ -104,6 +104,7 @@ function sendBtnClick() {
 }
 
 ## Bitácora de reflexión
+
 
 
 
