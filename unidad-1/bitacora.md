@@ -123,6 +123,7 @@ primero que nada debe instalarse la biblioteca para que p5.js entienda las varia
 
 <script src="https://unpkg.com/@gohai/p5.webserial@^1/libraries/p5.webserial.js"></script>
 
+
 Ya puesta la biblioteca se inicia con el codigo con varias funciones globales para que puedan ser llamadas por cada parte del codigo como createCanvas o background, tambien createButton etc.
 
   let port;
@@ -175,3 +176,4 @@ luego de esto se hace el bloque de codigo que contiene la forma, color y accione
       port.close();
     }
   }
+
