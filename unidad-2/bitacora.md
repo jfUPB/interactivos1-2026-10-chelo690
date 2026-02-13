@@ -172,7 +172,7 @@ Es dificil leer la maquina de estados en algunos casos, muchas veces no entiendo
 
 #### Maquina de Estados: 
 
-[![](https://img.plantuml.biz/plantuml/dsvg/PP31Ri8m44JlaV8FSuHMEVJAeI90Yf0AGQGIXwggjicgk2GnijVyM3-XFrOxBNKbRgjvE-lnJAsG4TUrQI9AMaPXQphna-hO84EdQgCdRqhI94sURrwGPVUObvk7rJ8eFnCco3-S5KR34CNTIVz3CorVdproUEVjjJuBUXQE_R7mHhvR5mk_LHteo1XLuy0lujnnBmJ3xuQjEbCa8RTsWfeQmfsDfk7cevz_bqetVEaYhHrRCUHzBPtPK2ILxbMZiIttnUvrKUutqHQx20rWvCEm346dt3T3fsdo3G00)](https://editor.plantuml.com/uml/PP31Ri8m44JlaV8FSuHMEVJAeI90Yf0AGQGIXwggjicgk2GnijVyM3-XFrOxBNKbRgjvE-lnJAsG4TUrQI9AMaPXQphna-hO84EdQgCdRqhI94sURrwGPVUObvk7rJ8eFnCco3-S5KR34CNTIVz3CorVdproUEVjjJuBUXQE_R7mHhvR5mk_LHteo1XLuy0lujnnBmJ3xuQjEbCa8RTsWfeQmfsDfk7cevz_bqetVEaYhHrRCUHzBPtPK2ILxbMZiIttnUvrKUutqHQx20rWvCEm346dt3T3fsdo3G00)
+[![](https://img.plantuml.biz/plantuml/dsvg/PP31IiD048RlWRp3VwnA3bvxaAPj5A5jf15w494nEzJL91jsP_jYFe8lvcwahk1j-B_vP_wPXHEoulikpqHBnwXSIoC_wfuj2lIwjMR-gYNFykpfyXb5SODLlRkzlulAJuKvodVlXA4OehaVpH-qDFBrEQ14S5xzrvTHB-AmNnPtbFjjjGvTpHjzC6RDHUHdSULv48BbesMdJvH8ETAHi665bXJXsYNRD7KJwj0MpwlzTDHPsdfsOYduEZgnfKGQCsXby50VgltBkZxiaYrz8-x6BCHXcQ8kU53JL_Fi6m00)](https://editor.plantuml.com/uml/PP31IiD048RlWRp3VwnA3bvxaAPj5A5jf15w494nEzJL91jsP_jYFe8lvcwahk1j-B_vP_wPXHEoulikpqHBnwXSIoC_wfuj2lIwjMR-gYNFykpfyXb5SODLlRkzlulAJuKvodVlXA4OehaVpH-qDFBrEQ14S5xzrvTHB-AmNnPtbFjjjGvTpHjzC6RDHUHdSULv48BbesMdJvH8ETAHi665bXJXsYNRD7KJwj0MpwlzTDHPsdfsOYduEZgnfKGQCsXby50VgltBkZxiaYrz8-x6BCHXcQ8kU53JL_Fi6m00)
 #### Codigo:
 
     from microbit import *
@@ -438,4 +438,5 @@ function playAlarm() {
   console.log("ALARM!");
   
 }
+
 
