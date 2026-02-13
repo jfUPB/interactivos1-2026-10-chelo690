@@ -172,7 +172,7 @@ Es dificil leer la maquina de estados en algunos casos, muchas veces no entiendo
 
 #### Maquina de Estados: 
 
-[![](https://img.plantuml.biz/plantuml/dsvg/PP71JiCm38RlbVeEFWvG15mdWTPj1I6n5Qr8Eo24J6f1e4sgn9buBnw15wDfDvg9c_L_l_tRoSmnMlPDdIQik2R8dSIM7bL35WGqIbepVLMS9cdoTFeCGbp3ebZVtDq6PQXW2jc7TqnG4R2YfZKHcXl--TQGGTTvzb-V1rr4UlcEdnH4fPLKQAES49vjLldoppOfJm8_Y0jFcX4ilLboQeSZ2GSPpo2nGhXq8uZNaAWbrKFamEF4muXpQDKNrK8ScUwxkZFr2AxW8eRZpVtalNNboR75BhN67LaSIMcqgWmy5Djyyx8ijkknxMXS1fFkJkB-3MQag_uVq-GN)](https://editor.plantuml.com/uml/PP71JiCm38RlbVeEFWvG15mdWTPj1I6n5Qr8Eo24J6f1e4sgn9buBnw15wDfDvg9c_L_l_tRoSmnMlPDdIQik2R8dSIM7bL35WGqIbepVLMS9cdoTFeCGbp3ebZVtDq6PQXW2jc7TqnG4R2YfZKHcXl--TQGGTTvzb-V1rr4UlcEdnH4fPLKQAES49vjLldoppOfJm8_Y0jFcX4ilLboQeSZ2GSPpo2nGhXq8uZNaAWbrKFamEF4muXpQDKNrK8ScUwxkZFr2AxW8eRZpVtalNNboR75BhN67LaSIMcqgWmy5Djyyx8ijkknxMXS1fFkJkB-3MQag_uVq-GN)
+[![](https://img.plantuml.biz/plantuml/dsvg/PP31Ri8m44JlaV8FSuHMEVJAeI90Yf0AGQGIXwggjicgk2GnijVyM3-XFrOxBNKbRgjvE-lnJAsG4TUrQI9AMaPXQphna-hO84EdQgCdRqhI94sURrwGPVUObvk7rJ8eFnCco3-S5KR34CNTIVz3CorVdproUEVjjJuBUXQE_R7mHhvR5mk_LHteo1XLuy0lujnnBmJ3xuQjEbCa8RTsWfeQmfsDfk7cevz_bqetVEaYhHrRCUHzBPtPK2ILxbMZiIttnUvrKUutqHQx20rWvCEm346dt3T3fsdo3G00)](https://editor.plantuml.com/uml/PP31Ri8m44JlaV8FSuHMEVJAeI90Yf0AGQGIXwggjicgk2GnijVyM3-XFrOxBNKbRgjvE-lnJAsG4TUrQI9AMaPXQphna-hO84EdQgCdRqhI94sURrwGPVUObvk7rJ8eFnCco3-S5KR34CNTIVz3CorVdproUEVjjJuBUXQE_R7mHhvR5mk_LHteo1XLuy0lujnnBmJ3xuQjEbCa8RTsWfeQmfsDfk7cevz_bqetVEaYhHrRCUHzBPtPK2ILxbMZiIttnUvrKUutqHQx20rWvCEm346dt3T3fsdo3G00)
 #### Codigo:
 
     from microbit import *
@@ -438,3 +438,4 @@ function playAlarm() {
   console.log("ALARM!");
   
 }
+
