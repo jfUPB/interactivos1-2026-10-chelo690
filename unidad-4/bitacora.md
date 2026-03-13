@@ -15,7 +15,7 @@ Se conecta el micro:bit, el cual ya está configurado con:
 
 	uart.init(115200)
 
-De esta manera se envían datos por comunicación serial, para luego abrir el SerialTerminal y configurar el baud rate: 115200.
+De esta manera se envían datos por comunicación serial, para luego abrir el SerialTerminal y configurar el baud rate: 115200. (uart.init(115200) se refiere a inicializar la comunicacion entre el pc o maquina y el microbit, estableciendo una velocidad de recepcion de 115200 bits por segundo en envio y recepcion de datos, esta es la velocidad que uitiliza el microbit por lo que el programa debe estar configurado a la misma velocidad para no registrar datos corruptos).
 
 Ahora comienzan a aparecer caracteres en el SerialTerminal, dando a entender qué comportamientos está capturando el micro:bit (presionar botones, movimiento, etc.), siendo los dos primeros valores (numéricos) el eje X y Y del acelerometro, y los valores booleanos (true y false) indican si el botón A o B están siendo presionados.
 
@@ -204,5 +204,6 @@ Codigo final del MicrobitV2Adapter:
 
 
 ## Bitácora de reflexión
+
 
 
