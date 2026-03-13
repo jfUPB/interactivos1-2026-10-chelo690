@@ -204,3 +204,5 @@ Codigo final del MicrobitV2Adapter:
 
 
 ## Bitácora de reflexión
+
+
