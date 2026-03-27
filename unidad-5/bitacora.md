@@ -408,6 +408,8 @@ class MicrobitBinaryAdapter extends BaseAdapter {
 module.exports = MicrobitBinaryAdapter;
 
 ```
+</DETAILS>
+
 <DETAILS>
 <summary><b>Bridge server:</b></summary>
 	
@@ -636,6 +638,8 @@ main().catch((e) => {
   process.exit(1);
 });
 ```
+</DETAILS>
+
 <DETAILS>
 <summary><b>Sketch:</b></summary>
 	
@@ -838,4 +842,6 @@ function windowResized() {
 }
 
 ```
+</DETAILS>
+
 ## Bitácora de reflexión
