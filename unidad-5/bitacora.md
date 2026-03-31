@@ -249,23 +249,27 @@ Al implementar el codigo por primera vez utilizando el microbit, encontre que no
 const { SerialPort } = require("serialport");
 const BaseAdapter = require("./BaseAdapter");
 
+const HEADER    = 0xAA;
+const PKT_LEN   = 8;  // [0xAA] [x_hi] [x_lo] [y_hi] [y_lo] [btnA] [btnB] [checksum]
+
+function toInt16(high, low) {
+  const val = (high << 8) | low;
+  return val >= 0x8000 ? val - 0x10000 : val;  // signed 16-bit
+}
+
 class MicrobitBinaryAdapter extends BaseAdapter {
   constructor({ path, baud = 115200, verbose = false } = {}) {
     super();
-    this.path = path;
-    this.baud = baud;
+    this.path    = path;
+    this.baud    = baud;
+    this.port    = null;
+    this.buf     = Buffer.alloc(0);
     this.verbose = verbose;
-
-    this.port = null;
-    this.buf = Buffer.alloc(0);
   }
 
   async connect() {
     if (this.connected) return;
-
-    if (!this.path) {
-      throw new Error("serialPort is required");
-    }
+    if (!this.path) throw new Error("serialPort is required for microbit device mode");
 
     this.port = new SerialPort({
       path: this.path,
@@ -273,135 +277,121 @@ class MicrobitBinaryAdapter extends BaseAdapter {
       autoOpen: false,
     });
 
-    await new Promise((res, rej) => {
-      this.port.open(err => err ? rej(err) : res());
+    await new Promise((resolve, reject) => {
+      this.port.open((err) => (err ? reject(err) : resolve()));
     });
 
     this.connected = true;
-    this.onConnected?.(`serial ${this.path} @${this.baud}`);
+    this.onConnected?.(`serial open ${this.path} @${this.baud}`);
 
-    this.port.on("data", (data) => this._onChunk(data));
-    this.port.on("error", (e) => this._handleError(e));
-    this.port.on("close", () => this._handleClose());
+    this.port.on("data",  (chunk) => this._onChunk(chunk));
+    this.port.on("error", (err)   => this._fail(err));
+    this.port.on("close", ()      => this._closed());
   }
 
   async disconnect() {
     if (!this.connected) return;
-
     this.connected = false;
 
-    if (this.port?.isOpen) {
-      await new Promise((res, rej) => {
-        this.port.close(err => err ? rej(err) : res());
+    if (this.port && this.port.isOpen) {
+      await new Promise((resolve, reject) => {
+        this.port.close((err) => (err ? reject(err) : resolve()));
       });
     }
-
     this.port = null;
-    this.buf = Buffer.alloc(0);
-
+    this.buf  = Buffer.alloc(0);
     this.onDisconnected?.("serial closed");
   }
 
   getConnectionDetail() {
-    return `serial ${this.path}`;
+    return `serial open ${this.path}`;
   }
 
-  //  Procesamiento de datos (VERSIÓN MEJORADA)
-  _onChunk(dataChunk) {
-    this.buf = Buffer.concat([this.buf, dataChunk]);
+  _onChunk(chunk) {
+    // Acumular bytes en buffer
+    this.buf = Buffer.concat([this.buf, chunk]);
 
-    while (this.buf.length >= 8) {
-
-      const headerIndex = this.buf.indexOf(0xAA);
-
-      if (headerIndex < 0) {
-        this.buf = Buffer.alloc(0);
-        return;
+    // Procesar todos los paquetes completos disponibles
+    while (true) {
+      // Buscar el header 0xAA
+      const headerIdx = this.buf.indexOf(HEADER);
+      if (headerIdx === -1) {
+        this.buf = Buffer.alloc(0);  // No hay header, descartar todo
+        break;
       }
 
-      if (this.buf.length < headerIndex + 8) {
-        return;
+      // Descartar bytes basura antes del header
+      if (headerIdx > 0) {
+        if (this.verbose) console.log(`[BIN] Descartando ${headerIdx} bytes antes del header`);
+        this.buf = this.buf.slice(headerIdx);
       }
 
-      const frame = this.buf.slice(headerIndex, headerIndex + 8);
+      // Esperar a tener un paquete completo
+      if (this.buf.length < PKT_LEN) break;
 
-      this.buf = this.buf.slice(headerIndex + 8);
+      const pkt = this.buf.slice(0, PKT_LEN);
 
-      try {
-        const parsed = this._decodeFrame(frame);
+      // Verificar checksum: suma de los 6 bytes de payload % 256
+      const payload  = pkt.slice(1, 7);  // [x_hi, x_lo, y_hi, y_lo, btnA, btnB]
+      const expected = payload.reduce((acc, b) => (acc + b) % 256, 0);
+      const received = pkt[7];
 
-        if (parsed && this.onData) {
-          this.onData(parsed);
-        }
-
-      } catch (err) {
-        if (this.verbose) {
-          console.log("Bad binary packet:", err.message, frame);
-        }
+      if (expected !== received) {
+        if (this.verbose) console.log(`[BIN] Checksum inválido: esperado ${expected}, recibido ${received}`);
+        // Descartar solo el header y seguir buscando el siguiente
+        this.buf = this.buf.slice(1);
+        continue;
       }
+
+      // Paquete válido — parsear
+      const x    = toInt16(pkt[1], pkt[2]);
+      const y    = toInt16(pkt[3], pkt[4]);
+      const btnA = pkt[5] === 1;
+      const btnB = pkt[6] === 1;
+
+      if (this.verbose) console.log(`[BIN] x=${x} y=${y} btnA=${btnA} btnB=${btnB}`);
+
+      this.onData?.({ x, y, btnA, btnB });
+
+      // Avanzar al siguiente paquete
+      this.buf = this.buf.slice(PKT_LEN);
+    }
+
+    // Evitar que el buffer crezca indefinidamente
+    if (this.buf.length > 4096) {
+      if (this.verbose) console.log("[BIN] Buffer overflow, limpiando");
+      this.buf = Buffer.alloc(0);
     }
   }
 
-  // Decodificación + validación en un solo lugar
-  _decodeFrame(frame) {
-    const xVal = frame.readInt16BE(1);
-    const yVal = frame.readInt16BE(3);
-    const btnA = frame[5];
-    const btnB = frame[6];
-    const receivedChecksum = frame[7];
-
-    let checksumCalc = 0;
-    for (let i = 1; i <= 6; i++) {
-      checksumCalc += frame[i];
-    }
-    checksumCalc %= 256;
-
-    if (checksumCalc !== receivedChecksum) {
-      throw new Error("Checksum inválido");
-    }
-
-    return {
-      x: xVal,
-      y: yVal,
-      btnA: btnA === 1,
-      btnB: btnB === 1
-    };
-  }
-
-  _handleError(err) {
+  _fail(err) {
     this.onError?.(String(err?.message || err));
     this.disconnect();
   }
 
-  _handleClose() {
+  _closed() {
     if (!this.connected) return;
-
     this.connected = false;
     this.port = null;
-    this.buf = Buffer.alloc(0);
-
+    this.buf  = Buffer.alloc(0);
     this.onDisconnected?.("serial closed (event)");
   }
 
-  async writeLine(line) {
-    if (!this.port?.isOpen) return;
-
-    await new Promise((res, rej) => {
-      this.port.write(line, err => err ? rej(err) : res());
-    });
+  async handleCommand(cmd) {
+    if (cmd?.cmd === "setLed") {
+      const x = Math.max(0, Math.min(4, Math.trunc(cmd.x)));
+      const y = Math.max(0, Math.min(4, Math.trunc(cmd.y)));
+      const v = Math.max(0, Math.min(9, Math.trunc(cmd.value)));
+      // Enviar como texto igual que el ASCII adapter
+      await this._writeLine(`LED,${x},${y},${v}\n`);
+    }
   }
 
-  async handleCommand(cmd) {
-    if (cmd?.cmd !== "setLed") return;
-
-    const clamp = (v, min, max) =>
-      Math.max(min, Math.min(max, Math.trunc(v)));
-
-    const x = clamp(cmd.x, 0, 4);
-    const y = clamp(cmd.y, 0, 4);
-    const v = clamp(cmd.value, 0, 9);
-
-    await this.writeLine(`LED,${x},${y},${v}\n`);
+  async _writeLine(line) {
+    if (!this.port || !this.port.isOpen) return;
+    await new Promise((resolve, reject) => {
+      this.port.write(line, (err) => (err ? reject(err) : resolve()));
+    });
   }
 }
 
@@ -503,13 +493,13 @@ async function createAdapter() {
   }
 
   if (DEVICE === "microbit-bin") {
-     const path = SERIAL_PATH ?? await findMicrobitPort();
-     if (!path) {
-       log.error("micro:bit not found. Use --serialPort to specify manually.");
-       process.exit(1);
-     }
-     return new MicrobitBinaryAdapter({ path, baud: BAUD });
-   }
+    const path = SERIAL_PATH ?? await findMicrobitPort();
+    if (!path) {
+      log.error("micro:bit not found. Use --serialPort to specify manually.");
+      process.exit(1);
+    }
+    return new MicrobitBinaryAdapter({ path, baud: BAUD, verbose: VERBOSE });
+  }
 
   return new SimAdapter({ hz: SIM_HZ });
 }
