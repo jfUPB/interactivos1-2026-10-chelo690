@@ -187,6 +187,7 @@ y una capa de render que dibuja. Lo que cambio fue del dato.
 El tiempo de vida de cada animación está determinado por `delta * 1000` ms —
 así la animación dura exactamente lo que dura el ciclo rítmico del evento. Esto
 hace que la visualización respire al ritmo de la música.
+
 ---
 
 #### 5. Si tuvieras que integrar una tercera aplicación en el futuro, ¿qué conservarías y qué cambiarías?
