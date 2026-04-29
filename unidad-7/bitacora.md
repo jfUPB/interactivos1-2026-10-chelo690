@@ -265,4 +265,5 @@ dos `bridgeServer`, los dos `BridgeClient`, la `FSMTask`, la cola de eventos y
 las funciones de dibujo.
 
 Lo único que agregaría sería un nuevo adapter. 
+
 ---
